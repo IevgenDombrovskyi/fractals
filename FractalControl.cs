@@ -45,7 +45,20 @@ public class FractalControl : Control
 
         public override void Render(DrawingContext context)
         {
-            Console.WriteLine($"{this.Algorithm}, depth = {this.Depth}");
+            switch (this.Algorithm) {
+                case Algorithm.SierpinskiTriangle:
+                    DrawSierpinskiTriangle(context);
+                    break;
+                case Algorithm.KochSnowflake:
+                    DrawKochSnowflake(context);
+                    break;
+                case Algorithm.HilbertCurve:
+                    DrawHilbertCurve(context);
+                    break;
+            }
+        }
+
+        private void DrawSierpinskiTriangle(DrawingContext context) {
             double margin = 20;
             double triangleHeightPerSide = Math.Sqrt(3.0) / 2.0;
             double width = this.Bounds.Width;
@@ -62,9 +75,19 @@ public class FractalControl : Control
             Point p2 = new Point(x2, y2);
             Point p3 = new Point(x3, y3);
 
-            var pen = new Avalonia.Media.Pen(Avalonia.Media.Brushes.White);
+            var pen = new Avalonia.Media.Pen(Avalonia.Media.Brushes.Black);
             context.DrawLine(pen, p1, p2);
             context.DrawLine(pen, p2, p3);
             context.DrawLine(pen, p3, p1);
+
+            // TODO
+        }
+
+        private void DrawKochSnowflake(DrawingContext context) {
+            // TODO
+        }
+
+        private void DrawHilbertCurve(DrawingContext context) {
+            // TODO
         }
     }
