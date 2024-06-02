@@ -1,5 +1,7 @@
+namespace Fractals;
+
 public enum Algorithm {
     SierpinskiTriangle,
     KochSnowflake,
-    PeanoCurve
+    HilbertCurve
 }

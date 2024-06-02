@@ -15,6 +15,7 @@ public class FractalControl : Control
         static FractalControl()
         {
             AffectsRender<FractalControl>(DepthProperty);
+            AffectsRender<FractalControl>(AlgorithmProperty);
         }
 
         public FractalControl()
@@ -44,6 +45,7 @@ public class FractalControl : Control
 
         public override void Render(DrawingContext context)
         {
+            Console.WriteLine($"{this.Algorithm}, depth = {this.Depth}");
             double margin = 20;
             double triangleHeightPerSide = Math.Sqrt(3.0) / 2.0;
             double width = this.Bounds.Width;

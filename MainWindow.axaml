@@ -4,17 +4,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:cc="using:Fractals" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" x:Class="Fractals.MainWindow" Title="Fractals">
     <DockPanel LastChildFill="True">
+        <DockPanel.Resources>          
+            <cc:ComparisonConverter x:Key="ComparisonConverter" />          
+        </DockPanel.Resources>
         <Border Width="220" Background="PaleGreen" DockPanel.Dock="Left">
             <StackPanel Margin="20">
                 <TextBlock Margin="0 10 0 5">Algorithm:</TextBlock>
-                <RadioButton GroupName="Algorithm" Content="Sierpinksi Triangle" IsChecked="True"/>
-                <RadioButton GroupName="Algorithm" Content="Koch Snowflak"/>
-                <RadioButton GroupName="Algorithm" Content="Hilbert Curve"/>
+                <RadioButton GroupName="Algorithm" Content="Sierpinksi Triangle" IsChecked="{Binding #fractal.Algorithm, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static cc:Algorithm.SierpinskiTriangle}}" />
+                <RadioButton GroupName="Algorithm" Content="Koch Snowflake" IsChecked="{Binding #fractal.Algorithm, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static cc:Algorithm.KochSnowflake}}" />
+                <RadioButton GroupName="Algorithm" Content="Hilbert Curve" IsChecked="{Binding #fractal.Algorithm, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static cc:Algorithm.HilbertCurve}}" />
 
                 <TextBlock Margin="0 5">Recursion depth:</TextBlock>
-                <NumericUpDown Value="0" Minimum="0" Maximum="1000" FormatString="{}{0:N0}"/>
+                <NumericUpDown Value="{Binding #fractal.Depth}" Minimum="0" Maximum="1000" FormatString="{}{0:N0}" />
             </StackPanel>
         </Border>
-        <cc:FractalControl />
+        <cc:FractalControl Name="fractal"/>
     </DockPanel>
 </Window>
