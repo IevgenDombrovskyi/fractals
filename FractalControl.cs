@@ -80,7 +80,30 @@ public class FractalControl : Control
             context.DrawLine(pen, p2, p3);
             context.DrawLine(pen, p3, p1);
 
-            // TODO
+            DrawSierpinskiImpl(context, pen, this.Depth,p1,p2,p3);
+
+        }
+        private void DrawSierpinskiImpl(DrawingContext context, Pen pen, int depth, Point a, Point b, Point c)
+        {
+           if (depth==0)
+           {
+            return;
+           }
+           Point ab = CentralPoint(a,b);
+           Point bc = CentralPoint(b,c);
+           Point ac = CentralPoint (a,c);
+           context.DrawLine(pen, ab, bc);
+           context.DrawLine(pen, bc, ac);
+           context.DrawLine(pen, ab, ac);
+           DrawSierpinskiImpl(context,pen, depth-1, a, ac, ab );
+           DrawSierpinskiImpl(context,pen, depth-1, b, ab, bc );
+           DrawSierpinskiImpl(context,pen, depth-1, c, ac, bc );
+        }
+        Point CentralPoint(Point a, Point b)
+        {
+            double X = (a.X+b.X)/2;
+           double Y = (a.Y+b.Y)/2;
+           return new Point(X,Y);
         }
 
         private void DrawKochSnowflake(DrawingContext context) {
