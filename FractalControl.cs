@@ -108,12 +108,12 @@ public class FractalControl : Control
         double triangleHeightPerSide = Math.Sqrt(3.0) / 2.0;
         double width = this.Bounds.Width;
         double height = this.Bounds.Height;
-        double triangleSide = Math.Min(width - 2 * margin, (height - 2 * margin) /  (4.0/3.0 * triangleHeightPerSide));
+        double triangleSide = Math.Min(width - 2 * margin, (height - 2 * margin) / (4.0 / 3.0 * triangleHeightPerSide));
         double triangleHeight = triangleHeightPerSide * triangleSide;
         double x1 = width / 2;
         double x2 = x1 - triangleSide / 2;
         double x3 = x1 + triangleSide / 2;
-        double y1 = height / 2 - 2.0/3.0*triangleHeight;
+        double y1 = height / 2 - 2.0 / 3.0 * triangleHeight;
         double y2 = y1 + triangleHeight;
         double y3 = y2;
         Point p1 = new Point(x1, y1);
@@ -145,6 +145,63 @@ public class FractalControl : Control
     }
     private void DrawHilbertCurve(DrawingContext context)
     {
-        // TODO
+        double margin = 20;
+        double width = this.Bounds.Width;
+        double height = this.Bounds.Height;
+        double side = Math.Min(width - 2 * margin, height - 2 * margin);
+        double Xmin = width / 2 - side / 2;
+        double Xmax = width / 2 + side / 2;
+        double Ymin = height / 2 - side / 2;
+        double Ymax = height / 2 + side / 2;
+        Point lastPoint = new Point(0, 0);
+        var pen = new Pen(Brushes.Black);
+        DrawHilbertCurveImpl(context, pen, this.Depth, Xmin, Xmax, Ymin, Ymax, ref lastPoint, Direction.Up);
+    }
+    void DrawHilbertCurveImpl(DrawingContext context, Pen pen, int depth, double Xmin, double Xmax, double Ymin, double Ymax, ref Point lastPoint, Direction direction)
+    {
+        var centerPoint = new Point((Xmax + Xmin) / 2, (Ymax + Ymin) / 2);
+        if (depth == 0)
+        {
+            if (lastPoint.X != 0 || lastPoint.Y != 0)
+            {
+                context.DrawLine(pen, lastPoint, centerPoint);
+            }
+            lastPoint = centerPoint;
+            return;
+        }
+        switch (direction)
+        {
+            case Direction.Up:
+                DrawHilbertCurveImpl(context, pen, depth - 1, Xmin, centerPoint.X, centerPoint.Y, Ymax, ref lastPoint, Direction.Right);
+                DrawHilbertCurveImpl(context, pen, depth - 1, Xmin, centerPoint.X, Ymin, centerPoint.Y, ref lastPoint, Direction.Up);
+                DrawHilbertCurveImpl(context, pen, depth - 1, centerPoint.X, Xmax, Ymin, centerPoint.Y, ref lastPoint, Direction.Up);
+                DrawHilbertCurveImpl(context, pen, depth - 1, centerPoint.X, Xmax, centerPoint.Y, Ymax, ref lastPoint, Direction.Left);
+                break;
+            case Direction.Down:
+                DrawHilbertCurveImpl(context, pen, depth - 1, centerPoint.X, Xmax, Ymin, centerPoint.Y, ref lastPoint, Direction.Left);
+                DrawHilbertCurveImpl(context, pen, depth - 1, centerPoint.X, Xmax, centerPoint.Y, Ymax, ref lastPoint, Direction.Down);
+                DrawHilbertCurveImpl(context, pen, depth - 1, Xmin, centerPoint.X, centerPoint.Y, Ymax, ref lastPoint, Direction.Down);
+                DrawHilbertCurveImpl(context, pen, depth - 1, Xmin, centerPoint.X, Ymin, centerPoint.Y, ref lastPoint, Direction.Right);
+                break;
+            case Direction.Left:
+                DrawHilbertCurveImpl(context, pen, depth - 1, centerPoint.X, Xmax, Ymin, centerPoint.Y, ref lastPoint, Direction.Down);
+                DrawHilbertCurveImpl(context, pen, depth - 1, Xmin, centerPoint.X, Ymin, centerPoint.Y, ref lastPoint, Direction.Left);
+                DrawHilbertCurveImpl(context, pen, depth - 1, Xmin, centerPoint.X, centerPoint.Y, Ymax, ref lastPoint, Direction.Left);
+                DrawHilbertCurveImpl(context, pen, depth - 1, centerPoint.X, Xmax, centerPoint.Y, Ymax, ref lastPoint, Direction.Up);
+                break;
+            case Direction.Right:
+                DrawHilbertCurveImpl(context, pen, depth - 1, Xmin, centerPoint.X, centerPoint.Y, Ymax, ref lastPoint, Direction.Up);
+                DrawHilbertCurveImpl(context, pen, depth - 1, centerPoint.X, Xmax, centerPoint.Y, Ymax, ref lastPoint, Direction.Right);
+                DrawHilbertCurveImpl(context, pen, depth - 1, centerPoint.X, Xmax, Ymin, centerPoint.Y, ref lastPoint, Direction.Right);
+                DrawHilbertCurveImpl(context, pen, depth - 1, Xmin, centerPoint.X, Ymin, centerPoint.Y, ref lastPoint, Direction.Down);
+                break;
+        }
+    }
+    private enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
     }
 }
