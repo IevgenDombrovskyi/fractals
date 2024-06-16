@@ -154,7 +154,7 @@ public class FractalControl : Control
         double Ymin = height / 2 - side / 2;
         double Ymax = height / 2 + side / 2;
         Point lastPoint = new Point(0, 0);
-        var pen = new Pen(Brushes.Black);
+        var pen = new Pen(Brushes.Black, thickness: side * 0.8 / Math.Pow(2, this.Depth), lineCap: PenLineCap.Round, lineJoin: PenLineJoin.Round);
         DrawHilbertCurveImpl(context, pen, this.Depth, Xmin, Xmax, Ymin, Ymax, ref lastPoint, Direction.Up);
     }
     void DrawHilbertCurveImpl(DrawingContext context, Pen pen, int depth, double Xmin, double Xmax, double Ymin, double Ymax, ref Point lastPoint, Direction direction)
