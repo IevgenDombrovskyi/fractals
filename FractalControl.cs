@@ -16,10 +16,6 @@ public class FractalControl : Control
 
     public FractalControl()
     {
-        // var timer = new DispatcherTimer();
-        // timer.Interval = TimeSpan.FromSeconds(1 / 60.0);
-        // timer.Tick += (sender, e) => Angle += Math.PI / 360;
-        // timer.Start();
     }
 
     public static readonly StyledProperty<int> DepthProperty =
@@ -74,7 +70,7 @@ public class FractalControl : Control
         Point p2 = new Point(x2, y2);
         Point p3 = new Point(x3, y3);
 
-        var pen = new Avalonia.Media.Pen(Avalonia.Media.Brushes.Black);
+        var pen = new Pen(Brushes.Black);
         context.DrawLine(pen, p1, p2);
         context.DrawLine(pen, p2, p3);
         context.DrawLine(pen, p3, p1);
@@ -124,7 +120,7 @@ public class FractalControl : Control
         Point p2 = new Point(x2, y2);
         Point p3 = new Point(x3, y3);
 
-        var pen = new Avalonia.Media.Pen(Avalonia.Media.Brushes.Black);
+        var pen = new Pen(Brushes.Black);
         DrawKochSnowflakeImpl(context, pen, this.Depth, p1, p2);
         DrawKochSnowflakeImpl(context, pen, this.Depth, p2, p3);
         DrawKochSnowflakeImpl(context, pen, this.Depth, p3, p1);
