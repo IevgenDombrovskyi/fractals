@@ -95,7 +95,7 @@ public class FractalControl : Control
         DrawSierpinskiImpl(context, pen, depth - 1, c, ac, bc);
     }
     //Linear interpolation
-Point Lerp(Point a, Point b, double t)
+    Point Lerp(Point a, Point b, double t)
     {
         double X = b.X * t + a.X * (1 - t);
         double Y = b.Y * t + a.Y * (1 - t);
